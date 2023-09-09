@@ -8,6 +8,7 @@ class Product{
     int nowCountProduct;
 public:
     Product(string s,bool b,int i):info(s),rePurchase(b),nowCountProduct(i){}
+    Product(Product p){info = p->info;rePurchase=p->rePurchase;nowCountProduct=p->nowCountProduct;}
     void display(){
         printf("%s\n",info.c_str());
         printf("재구매 여부:%c\n",rePurchase?'O':'X');
@@ -17,22 +18,22 @@ public:
     void setRePurchase(bool b){rePurchase=b;}
     void setInfo(string s){info=s;}
 };
-map<int,Product*> products;
-map<int,Product*>::iterator it;
+map<int,Product> products;
+map<int,Product>::iterator it;
 void add_product(){
     int k;
     printf("부품 번호를 입력하세요(5자리)\n");
     scanf("%d",&k);
     system("cls");
 
-    string i;
+    string s;
     printf("설명을 입력하세요(10자 이내)\n");
-    cin>>i;
+    cin>>s;
     system("cls");
 
-    int in;
+    int i;
     printf("현재 재고량을 입력하세요\n");
-    scanf("%c",&in);
+    scanf("%c",&i);
     system("cls");
 
     char c = 'N';
@@ -41,10 +42,11 @@ void add_product(){
     scanf("%c",&c);system("cls");
     }
 
-    bool bools;
-    bools = ((c=='T')?true:false);
-    Product* t = new Product(i,bools,in);
-    products[k] = t;
+    bool b;
+    b = ((c=='T')?true:false);
+    Product t(s,b,i);
+    Product *ts = &t;
+    products[k] = ts;
 }
 void manage_Product(){
     int ans;
@@ -60,6 +62,7 @@ void manage_Product(){
         scanf("%d",&ans);
         switch(ans){
             case(1):
+                add_product();
                 break;
             case(2):
                 break;
@@ -79,3 +82,4 @@ int main()
 {
         manage_Product();
 }
+
